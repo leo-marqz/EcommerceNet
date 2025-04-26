@@ -1,6 +1,7 @@
 ﻿
 
 using Ecommerce.Domain.Common;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Ecommerce.Domain.Models
@@ -9,5 +10,7 @@ namespace Ecommerce.Domain.Models
     {
         [Column(TypeName = "NVARCHAR(100)")]
         public string Name { get; set; } = string.Empty;
+
+        public virtual ICollection<Product>? Products { get; set; }
     }
 }

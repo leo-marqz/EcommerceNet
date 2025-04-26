@@ -19,5 +19,7 @@ namespace Ecommerce.Domain.Models
         public int ShoppingCartId { get; set; }
         public int ProductId { get; set; }
         public int Stock { get; set; }
+
+        public virtual ShoppingCart? Cart { get; set; }
     }
 }

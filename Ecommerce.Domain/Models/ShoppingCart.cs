@@ -9,6 +9,6 @@ namespace Ecommerce.Domain.Models
     public class ShoppingCart : BaseModel
     {
         public Guid ShoppingCartMasterId{ get; set; }
-        public virtual ICollection<ShoppingCartItem>? ShoppingCartItems{ get; set; }
+        public virtual ICollection<ShoppingCartItem>? Items{ get; set; }
     }
 }
