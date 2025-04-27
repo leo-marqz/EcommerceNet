@@ -47,7 +47,7 @@ namespace Ecommerce.Infrastructure.Repositories
                         type: repositoryType.MakeGenericType( typeof(TEntity) ), 
                         _context
                     );
-                _repositories.Add( type, repositoryInstance );
+                _repositories.Add( key: type, value: repositoryInstance );
             }
             return (IRepositoryAsync<TEntity>)_repositories[type]!;
         }
