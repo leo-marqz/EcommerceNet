@@ -1,5 +1,6 @@
 
 using Ecommerce.Domain.Models;
+using Ecommerce.Infrastructure;
 using Ecommerce.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -23,6 +24,8 @@ namespace Ecommerce.API
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Services.AddInfrastructureServices(builder.Configuration);
 
             // Add services to the container.
             builder.Services.AddDbContext<EcommerceApplicationDbContext>((options) =>
