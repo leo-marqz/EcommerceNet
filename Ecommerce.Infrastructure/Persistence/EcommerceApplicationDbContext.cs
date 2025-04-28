@@ -1,9 +1,13 @@
 ﻿
 
+using Ecommerce.Domain.Common;
 using Ecommerce.Domain.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Ecommerce.Infrastructure.Persistence
 {
@@ -12,6 +16,27 @@ namespace Ecommerce.Infrastructure.Persistence
         public EcommerceApplicationDbContext(DbContextOptions<EcommerceApplicationDbContext> options)
             : base(options)
         {
+        }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            var username = "System"; // TODO: Get the current user name from the context
+            foreach(var entry in ChangeTracker.Entries<BaseModel>())
+            {
+                switch(entry.State)
+                {
+                    case EntityState.Added:
+                        entry.Entity.CreatedBy = username;
+                        entry.Entity.CreatedAt = DateTime.UtcNow;
+                        break;
+                    case EntityState.Modified:
+                        entry.Entity.LastModifiedBy = username;
+                        entry.Entity.LastModifiedAt = DateTime.UtcNow;
+                        break;
+
+                }
+            }
+            return base.SaveChangesAsync(cancellationToken);
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
