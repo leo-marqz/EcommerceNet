@@ -57,39 +57,39 @@ namespace Ecommerce.Infrastructure.Persistence
 
                 if(!_context.Categories.Any())
                 {
-                    string ct_content = File.ReadAllText("../Data/category.json");
+                    string ct_content = File.ReadAllText("../Ecommerce.Infrastructure/Data/category.json");
                     List<Category>? categories = JsonConvert.DeserializeObject<List<Category>>(ct_content);
                     await _context.Categories.AddRangeAsync(categories!);
                     await _context.SaveChangesAsync();
                 }
 
-                if (_context.Products!.Any())
+                if (!_context.Products!.Any())
                 {
-                    string pd_content = File.ReadAllText("../Data/product.json");
+                    string pd_content = File.ReadAllText("../Ecommerce.Infrastructure/Data/product.json");
                     List<Product>? products = JsonConvert.DeserializeObject<List<Product>>(pd_content);
                     await _context.Products.AddRangeAsync(products!);
                     await _context.SaveChangesAsync();
                 }
 
-                if (_context.Images!.Any())
+                if (!_context.Images!.Any())
                 {
-                    string img_content = File.ReadAllText("../Data/image.json");
+                    string img_content = File.ReadAllText("../Ecommerce.Infrastructure/Data/image.json");
                     List<Image>? images = JsonConvert.DeserializeObject<List<Image>>(img_content);
                     await _context.Images.AddRangeAsync(images!);
                     await _context.SaveChangesAsync();
                 }
 
-                if (_context.Reviews!.Any())
+                if (!_context.Reviews!.Any())
                 {
-                    string rv_content = File.ReadAllText("../Data/review.json");
+                    string rv_content = File.ReadAllText("../Ecommerce.Infrastructure/Data/review.json");
                     List<Review>? reviews = JsonConvert.DeserializeObject<List<Review>>(rv_content);
                     await _context.Reviews.AddRangeAsync(reviews!);
                     await _context.SaveChangesAsync();
                 }
 
-                if (_context.Countries!.Any())
+                if (!_context.Countries!.Any())
                 {
-                    string cou_content = File.ReadAllText("../Data/countries.json");
+                    string cou_content = File.ReadAllText("../Ecommerce.Infrastructure/Data/countries.json");
                     List<Country>? countries = JsonConvert.DeserializeObject<List<Country>>(cou_content);
                     await _context.Countries.AddRangeAsync(countries!);
                     await _context.SaveChangesAsync();

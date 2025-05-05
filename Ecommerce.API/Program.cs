@@ -13,15 +13,17 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Ecommerce.API
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -57,8 +59,8 @@ namespace Ecommerce.API
             //soporte de tareas de login
             identityBuilder.AddSignInManager<SignInManager<User>>();
 
-            //builder.Services.TryAddSingleton<ISystemClock, SystemClock>();
-            builder.Services.TryAddSingleton<TimeProvider>();
+            builder.Services.TryAddSingleton<ISystemClock, SystemClock>();
+            //builder.Services.TryAddSingleton<TimeProvider>();
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:Key"]!));
             
@@ -104,6 +106,30 @@ namespace Ecommerce.API
             app.UseAuthorization();
             app.UseCors("AllowAllOrigins");
             app.MapControllers();
+
+            using(var scope = app.Services.CreateScope())
+            {
+                var service = scope.ServiceProvider;
+                var loggerFactory = service.GetRequiredService<ILoggerFactory>();
+                try
+                {
+                    var context = service.GetRequiredService<EcommerceApplicationDbContext>();
+                    var userManager = service.GetRequiredService<UserManager<User>>();
+                    var roleManager = service.GetRequiredService<RoleManager<IdentityRole>>();
+                    await context.Database.MigrateAsync();
+                    await EcommerceInitialDataLoading.LoadAsync(
+                            context, 
+                            userManager, 
+                            roleManager, 
+                            loggerFactory
+                        );
+                }
+                catch (Exception ex)
+                {
+                    var logger = loggerFactory.CreateLogger(nameof(Program));
+                    logger.LogError(ex, "Migration Error.....Main");
+                }
+            }
 
             app.Run();
         }

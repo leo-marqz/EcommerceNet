@@ -9,7 +9,7 @@ namespace Ecommerce.Domain.Configurations
     {
         public void Configure(EntityTypeBuilder<OrderItem> builder)
         {
-            builder.Property((oitem) => oitem.Price).HasColumnType("decimal(10,2)");
+            builder.Property((oitem) => oitem.Price).HasColumnType("DECIMAL(10,2)");
         }
     }
 }
