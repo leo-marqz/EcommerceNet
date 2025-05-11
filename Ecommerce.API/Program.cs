@@ -1,4 +1,5 @@
 
+using Ecommerce.Application;
 using Ecommerce.Domain.Models;
 using Ecommerce.Infrastructure;
 using Ecommerce.Infrastructure.Persistence;
@@ -28,6 +29,7 @@ namespace Ecommerce.API
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddInfrastructureServices(builder.Configuration);
+            builder.Services.AddApplicationServices(builder.Configuration);
 
             // Add services to the container.
             builder.Services.AddDbContext<EcommerceApplicationDbContext>((options) =>
